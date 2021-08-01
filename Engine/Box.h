@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Box2D\Box2D.h>
+#include <box2d/box2d.h>
 #include "IndexedTriangleList.h"
 #include "Vec2.h"
 #include "Vec3.h"
@@ -50,7 +50,8 @@ public:
 			fixtureDef.restitution = 1.0f;
 			pBody->CreateFixture( &fixtureDef );
 		}
-		pBody->SetUserData( this );
+		//pBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
+		//pBody->SetUserData( this );
 	}
 	void Draw( Pipeline<SolidEffect>& pepe ) const
 	{

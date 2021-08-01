@@ -24,12 +24,13 @@
 #include <memory>
 #include <vector>
 #include "FrameTimer.h"
-#include <Box2D\Box2D.h>
+
 #include "Box.h"
 #include "Boundaries.h"
 #include "Pipeline.h"
 #include "SolidEffect.h"
 #include <random>
+
 
 class Game
 {
