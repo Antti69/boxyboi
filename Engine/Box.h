@@ -52,7 +52,7 @@ public:
 			pBody->CreateFixture( &fixtureDef );
 		}
 		//pBody->GetUserData() = reinterpret_cast<Box*>(this);
-		pBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
+		//pBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
 		//pBody->SetUserData( this );
 	}
 	void Draw( Pipeline<SolidEffect>& pepe ) const

@@ -34,7 +34,7 @@ Game::Game( MainWindow& wnd )
 	pepe( gfx )
 {
 	pepe.effect.vs.cam.SetPos( { 0.0,0.0f } );
-	pepe.effect.vs.cam.SetZoom( 0.5f / boundarySize );
+	pepe.effect.vs.cam.SetZoom( 1.0f / boundarySize );
 
 	std::generate_n( std::back_inserter( boxPtrs ),nBoxes,[this]() {
 		return Box::Spawn( boxSize,bounds,world,rng );
@@ -49,13 +49,16 @@ Game::Game( MainWindow& wnd )
 			if( bodyPtrs[0]->GetType() == b2BodyType::b2_dynamicBody &&
 				bodyPtrs[1]->GetType() == b2BodyType::b2_dynamicBody )
 			{
-				Box* boxPtrs[] = { 
+				Box* boxPtrs[] = 
+				{ 
 					reinterpret_cast<Box*>(&bodyPtrs[0]->GetUserData()),
 					reinterpret_cast<Box*>(&bodyPtrs[1]->GetUserData())
 				};
+
 				auto& tid0 = typeid(&boxPtrs[0]->GetColorTrait());
 				auto& tid1 = typeid(&boxPtrs[1]->GetColorTrait());
-
+				
+				
 				std::stringstream msg;
 				msg << "Collision between " << tid0.name() << " and " << tid1.name() << std::endl;
 				OutputDebugStringA( msg.str().c_str() );
@@ -78,6 +81,7 @@ void Game::UpdateModel()
 {
 	const float dt = ft.Mark();
 	world.Step( dt,8,3 );
+	
 }
 
 void Game::ComposeFrame()

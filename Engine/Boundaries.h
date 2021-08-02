@@ -25,12 +25,12 @@ public:
 			pBody = BodyPtr::Make( world,bodyDef );
 		}
 		{
-			const float extents = 0.99f * size;
+			const float extents = 0.99f * size;     //(-, -) (-, +) (+, +) (+, -)
 			const b2Vec2 vertices[] = {
 				{ -extents,-extents },
-				{  extents,-extents },
+				{ -extents, extents },
 				{  extents, extents },
-				{ -extents, extents }
+				{  extents,-extents }
 			};
 			b2ChainShape chain;
 			chain.CreateLoop( vertices,4 );
@@ -42,7 +42,7 @@ public:
 			pBody->CreateFixture( &fixtureDef );
 		}
 		//pBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(&bodyDef);
-		pBody->GetUserData() = this->pBody->GetUserData();
+		//pBody->GetUserData() = this->pBody->GetUserData();
 		//pBody->SetUserData( this );
 	}
 	float GetSize() const
