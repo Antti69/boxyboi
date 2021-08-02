@@ -17,6 +17,7 @@ public:
 		:
 		size( size )
 	{
+		
 		{
 			b2BodyDef bodyDef;
 			bodyDef.type = b2_staticBody;
@@ -40,8 +41,8 @@ public:
 			fixtureDef.restitution = 1.0f;
 			pBody->CreateFixture( &fixtureDef );
 		}
-		
-		//pBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
+		//pBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(&bodyDef);
+		pBody->GetUserData() = this->pBody->GetUserData();
 		//pBody->SetUserData( this );
 	}
 	float GetSize() const

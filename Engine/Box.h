@@ -30,6 +30,7 @@ public:
 		pColorTrait( std::move( pColorTrait ) ),
 		size( size )
 	{
+		
 		Init();
 		{
 			b2BodyDef bodyDef;
@@ -50,7 +51,8 @@ public:
 			fixtureDef.restitution = 1.0f;
 			pBody->CreateFixture( &fixtureDef );
 		}
-		//pBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
+		//pBody->GetUserData() = reinterpret_cast<Box*>(this);
+		pBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
 		//pBody->SetUserData( this );
 	}
 	void Draw( Pipeline<SolidEffect>& pepe ) const

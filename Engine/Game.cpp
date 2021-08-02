@@ -34,7 +34,7 @@ Game::Game( MainWindow& wnd )
 	pepe( gfx )
 {
 	pepe.effect.vs.cam.SetPos( { 0.0,0.0f } );
-	pepe.effect.vs.cam.SetZoom( 1.0f / boundarySize );
+	pepe.effect.vs.cam.SetZoom( 0.5f / boundarySize );
 
 	std::generate_n( std::back_inserter( boxPtrs ),nBoxes,[this]() {
 		return Box::Spawn( boxSize,bounds,world,rng );
