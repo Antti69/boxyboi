@@ -40,7 +40,7 @@ public:
 			bodyDef.angularVelocity = angVel;
 			bodyDef.angle = angle;
 			pBody = BodyPtr::Make( world,bodyDef );
-			//bodyDef.userData.pointer = reinterpret_cast<uintptr_t>(&pColorTrait);
+			
 		}
 		{
 			b2PolygonShape dynamicBox;
@@ -52,10 +52,7 @@ public:
 			fixtureDef.restitution = 1.0f;
 			pBody->CreateFixture( &fixtureDef );
 		}
-		
-		pBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(&GetColorTrait());
-		//pBody->GetUserData() = reinterpret_cast<Box*>(this);
-		//pBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
+		pBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
 		//pBody->SetUserData( this );
 	}
 	void Draw( Pipeline<SolidEffect>& pepe ) const

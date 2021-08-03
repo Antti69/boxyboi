@@ -51,12 +51,12 @@ Game::Game( MainWindow& wnd )
 			{
 				Box* boxPtrs[] = 
 				{ 
-					reinterpret_cast<Box*>(&bodyPtrs[0]->GetUserData()),
-					reinterpret_cast<Box*>(&bodyPtrs[1]->GetUserData())
+					
+					reinterpret_cast<Box*>(bodyPtrs[0]->GetUserData().pointer),
+					reinterpret_cast<Box*>(bodyPtrs[1]->GetUserData().pointer)
 				};
-
-				auto& tid0 = typeid(&boxPtrs[0]->GetColorTrait());
-				auto& tid1 = typeid(&boxPtrs[1]->GetColorTrait());
+				auto& tid0 = typeid(boxPtrs[0]->GetColorTrait());
+				auto& tid1 = typeid(boxPtrs[1]->GetColorTrait());
 				
 				
 				std::stringstream msg;
