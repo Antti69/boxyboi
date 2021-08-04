@@ -26,6 +26,7 @@
 #include <functional>
 #include <iterator>
 
+
 Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
@@ -49,19 +50,25 @@ Game::Game( MainWindow& wnd )
 			if( bodyPtrs[0]->GetType() == b2BodyType::b2_dynamicBody &&
 				bodyPtrs[1]->GetType() == b2BodyType::b2_dynamicBody )
 			{
-				Box* boxPtrs[] = 
+				Box* pboxPtrs[] = 
 				{ 
-					
 					reinterpret_cast<Box*>(bodyPtrs[0]->GetUserData().pointer),
 					reinterpret_cast<Box*>(bodyPtrs[1]->GetUserData().pointer)
 				};
-				auto& tid0 = typeid(boxPtrs[0]->GetColorTrait());
-				auto& tid1 = typeid(boxPtrs[1]->GetColorTrait());
+
+				
+				
+				auto& tid0 = typeid(pboxPtrs[0]->GetColorTrait());
+				auto& tid1 = typeid(pboxPtrs[1]->GetColorTrait());
 				
 				
 				std::stringstream msg;
 				msg << "Collision between " << tid0.name() << " and " << tid1.name() << std::endl;
 				OutputDebugStringA( msg.str().c_str() );
+
+
+				
+				
 			}
 		}
 	};
