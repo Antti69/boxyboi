@@ -52,6 +52,7 @@ public:
 			fixtureDef.restitution = 1.0f;
 			pBody->CreateFixture( &fixtureDef );
 		}
+		is_Dead = false;
 		pBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
 		//pBody->SetUserData( this );
 	}
@@ -98,7 +99,7 @@ public:
 	{
 		return is_Dead;
 	}
-	bool is_Dead = false;
+	bool is_Dead;
 private:
 	static void Init()
 	{

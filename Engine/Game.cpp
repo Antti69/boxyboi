@@ -61,25 +61,25 @@ Game::Game( MainWindow& wnd )
 				auto& tid0 = typeid(pboxPtrs[0]->GetColorTrait());
 				auto& tid1 = typeid(pboxPtrs[1]->GetColorTrait());
 				
-				if (tid0 == tid1)
-				{
-					pboxPtrs[0]->is_Dead = true;
-					pboxPtrs[1]->is_Dead = true;
-				}
+
 				
 				std::stringstream msg;
 				msg << "Collision between " << tid0.name() << " and " << tid1.name() << std::endl;
 				OutputDebugStringA( msg.str().c_str() );
 
-
+				if (tid0 == tid1)
+				{
+					contact->GetFixtureA()->GetBody()->GetUserData().pointer = pboxPtrs[0]->is_Dead = true;
+					contact->GetFixtureB()->GetBody()->GetUserData().pointer = pboxPtrs[1]->is_Dead = true;
+				}
 				
 				
 			}
 		}
-		void EndContact(b2Contact* contact) override
-		{
-			b2Body* bodyPtrs[] = { contact->GetFixtureA()->GetBody(),contact->GetFixtureB()->GetBody() };
-		}
+		//void EndContact(b2Contact* contact) override
+		//{
+		//	b2Body* bodyPtrs[] = { contact->GetFixtureA()->GetBody(),contact->GetFixtureB()->GetBody() };
+		//}
 	};
 	static Listener mrLister;
 	world.SetContactListener( &mrLister );
@@ -98,12 +98,24 @@ void Game::UpdateModel()
 {
 	const float dt = ft.Mark();
 	world.Step( dt,8,3 );
-	if (wnd.kbd.KeyIsPressed(VK_SPACE))
-	{
-		boxPtrs.erase(std::remove_if(boxPtrs.begin(), boxPtrs.end() - 1, [](auto& b) {return b->is_Dead == true; }));
-		boxPtrs.shrink_to_fit();
-	}
+	//if (wnd.kbd.KeyIsPressed(VK_SPACE))
+	//{
+	//	boxPtrs.erase(std::remove_if(boxPtrs.begin(), boxPtrs.end() - 1, [](auto& b) {return b->is_Dead == true; }));
+	//	boxPtrs.shrink_to_fit();
+	//}
 
+	for (auto& s : boxPtrs)
+	{
+		if (s->is_Dead == true)
+		{
+			boxPtrs.erase(std::remove_if(boxPtrs.begin(), boxPtrs.end(), [](std::unique_ptr<Box>& b) {return b->is_Dead == true; }));
+		}
+	}
+	//if (boxPtrs.size() > 0)
+	//{
+	//	boxPtrs.erase(std::remove_if(boxPtrs.begin(), boxPtrs.end() - 1, [](std::unique_ptr<Box> b) {return b->is_Dead == true; }));
+	//}
+	
 
 	
 }
