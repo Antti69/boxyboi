@@ -94,7 +94,11 @@ public:
 	{
 		return *pColorTrait;
 	}
-
+	bool GetIsDead() const
+	{
+		return is_Dead;
+	}
+	bool is_Dead = false;
 private:
 	static void Init()
 	{
@@ -109,4 +113,5 @@ private:
 	float size;
 	BodyPtr pBody;
 	std::unique_ptr<ColorTrait> pColorTrait;
+	
 };

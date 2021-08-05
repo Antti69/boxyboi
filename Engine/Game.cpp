@@ -55,12 +55,17 @@ Game::Game( MainWindow& wnd )
 					reinterpret_cast<Box*>(bodyPtrs[0]->GetUserData().pointer),
 					reinterpret_cast<Box*>(bodyPtrs[1]->GetUserData().pointer)
 				};
-
+				
 				
 				
 				auto& tid0 = typeid(pboxPtrs[0]->GetColorTrait());
 				auto& tid1 = typeid(pboxPtrs[1]->GetColorTrait());
 				
+				if (tid0 == tid1)
+				{
+					pboxPtrs[0]->is_Dead = true;
+					pboxPtrs[1]->is_Dead = true;
+				}
 				
 				std::stringstream msg;
 				msg << "Collision between " << tid0.name() << " and " << tid1.name() << std::endl;
@@ -71,9 +76,14 @@ Game::Game( MainWindow& wnd )
 				
 			}
 		}
+		void EndContact(b2Contact* contact) override
+		{
+			b2Body* bodyPtrs[] = { contact->GetFixtureA()->GetBody(),contact->GetFixtureB()->GetBody() };
+		}
 	};
 	static Listener mrLister;
 	world.SetContactListener( &mrLister );
+	
 }
 
 void Game::Go()
@@ -88,6 +98,13 @@ void Game::UpdateModel()
 {
 	const float dt = ft.Mark();
 	world.Step( dt,8,3 );
+	if (wnd.kbd.KeyIsPressed(VK_SPACE))
+	{
+		boxPtrs.erase(std::remove_if(boxPtrs.begin(), boxPtrs.end() - 1, [](auto& b) {return b->is_Dead == true; }));
+		boxPtrs.shrink_to_fit();
+	}
+
+
 	
 }
 
