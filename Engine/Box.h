@@ -56,6 +56,10 @@ public:
 		pBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
 		//pBody->SetUserData( this );
 	}
+	bool operator==(const Box& r) const
+	{
+		return pColorTrait.get() == r.pColorTrait.get();
+	}
 	void Draw( Pipeline<SolidEffect>& pepe ) const
 	{
 		pepe.effect.vs.BindTranslation( GetPosition() );

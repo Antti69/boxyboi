@@ -24,7 +24,7 @@
 #include <memory>
 #include <vector>
 #include "FrameTimer.h"
-
+#include "ColResult.h"
 #include "Box.h"
 #include "Boundaries.h"
 #include "Pipeline.h"

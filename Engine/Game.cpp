@@ -25,6 +25,7 @@
 #include <typeinfo>
 #include <functional>
 #include <iterator>
+#include "Box.cpp"
 
 
 Game::Game( MainWindow& wnd )
@@ -56,6 +57,11 @@ Game::Game( MainWindow& wnd )
 					reinterpret_cast<Box*>(bodyPtrs[1]->GetUserData().pointer)
 				};
 				
+				ColResult Cr;
+
+				RedTrait* r = dynamic_cast<RedTrait*>(&pboxPtrs[0]->GetColorTrait())
+
+				Cr.Case(RedTrait) = 
 				
 				
 				auto& tid0 = typeid(pboxPtrs[0]->GetColorTrait());
@@ -98,26 +104,18 @@ void Game::UpdateModel()
 {
 	const float dt = ft.Mark();
 	world.Step( dt,8,3 );
-	//if (wnd.kbd.KeyIsPressed(VK_SPACE))
-	//{
-	//	boxPtrs.erase(std::remove_if(boxPtrs.begin(), boxPtrs.end() - 1, [](auto& b) {return b->is_Dead == true; }));
-	//	boxPtrs.shrink_to_fit();
-	//}
+
+	boxPtrs.erase(std::remove_if(boxPtrs.begin(), boxPtrs.end(),
+		[](std::unique_ptr<Box>& b)
+		{
+			return b->GetIsDead();
+		}), boxPtrs.end());
 
 	for (auto& s : boxPtrs)
 	{
-		if (s->is_Dead == true)
-		{
-			boxPtrs.erase(std::remove_if(boxPtrs.begin(), boxPtrs.end(), [](std::unique_ptr<Box>& b) {return b->is_Dead == true; }));
-		}
+		
 	}
-	//if (boxPtrs.size() > 0)
-	//{
-	//	boxPtrs.erase(std::remove_if(boxPtrs.begin(), boxPtrs.end() - 1, [](std::unique_ptr<Box> b) {return b->is_Dead == true; }));
-	//}
-	
 
-	
 }
 
 void Game::ComposeFrame()
