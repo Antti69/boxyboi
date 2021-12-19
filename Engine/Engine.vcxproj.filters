@@ -114,6 +114,9 @@
     <ClInclude Include="ColResult.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ColorTrait.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DXErr.cpp">

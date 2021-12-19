@@ -1,71 +1,9 @@
 #include "Box.h"
+#include "ColorTrait.h"
 IndexedTriangleList<Vec2> Box::model;
 
 
-class RedTrait : public Box::ColorTrait
-{
-public:
-	std::unique_ptr<ColorTrait> Clone() const override
-	{
-		return std::make_unique<RedTrait>();
-	}
-	Color GetColor() const override
-	{
-		return Colors::Red;
-	}
-};
 
-class GreenTrait : public Box::ColorTrait
-{
-public:
-	std::unique_ptr<ColorTrait> Clone() const override
-	{
-		return std::make_unique<GreenTrait>();
-	}
-	Color GetColor() const override
-	{
-		return Colors::Green;
-	}
-};
-
-class BlueTrait : public Box::ColorTrait
-{
-public:
-	std::unique_ptr<ColorTrait> Clone() const override
-	{
-		return std::make_unique<BlueTrait>();
-	}
-	Color GetColor() const override
-	{
-		return Colors::Blue;
-	}
-};
-
-class YellowTrait : public Box::ColorTrait
-{
-public:
-	std::unique_ptr<ColorTrait> Clone() const override
-	{
-		return std::make_unique<YellowTrait>();
-	}
-	Color GetColor() const override
-	{
-		return Colors::Yellow;
-	}
-};
-
-class WhiteTrait : public Box::ColorTrait
-{
-public:
-	std::unique_ptr<ColorTrait> Clone() const override
-	{
-		return std::make_unique<WhiteTrait>();
-	}
-	Color GetColor() const override
-	{
-		return Colors::White;
-	}
-};
 
 std::unique_ptr<Box> Box::Spawn( float size,const Boundaries& bounds,b2World& world,std::mt19937& rng )
 {
@@ -103,4 +41,27 @@ std::unique_ptr<Box> Box::Spawn( float size,const Boundaries& bounds,b2World& wo
 	}
 	
 	return std::make_unique<Box>( std::move( pColorTrait ),world,pos,size,ang,linVel,angVel );
+}
+
+std::vector<std::unique_ptr<Box>> Box::slice(b2World& world)
+{
+	std::vector<std::unique_ptr<Box>> boxes;
+
+	const Vec2 pos = GetPosition();
+	const Vec2 Vel = GetVelocity();
+	const auto linVel = GetLinVel();
+	const float angle = GetAngle();
+	const float angleVel = GetAngularVelocity();
+	const float size = GetSize() / 2.0f;
+
+	for (int i = 0; i < 4; i++)
+	{
+		if (GetSize() > 0.09)
+		{
+			boxes.push_back(std::make_unique<Box>(pColorTrait->Clone(), world, pos, size, angle, linVel, angleVel));
+			effect = Box::ColEffect::Dead;
+		}
+		
+	}
+	return boxes;
 }

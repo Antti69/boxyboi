@@ -22,8 +22,11 @@ public:
 		virtual Color GetColor() const = 0;
 		virtual std::unique_ptr<ColorTrait> Clone() const = 0;
 	};
+
+
 public:
 	static std::unique_ptr<Box> Box::Spawn( float size,const Boundaries& bounds,b2World& world,std::mt19937& rng );
+
 	Box( std::unique_ptr<ColorTrait> pColorTrait, b2World& world,const Vec2& pos,
 		float size = 1.0f,float angle = 0.0f,Vec2 linVel = {0.0f,0.0f},float angVel = 0.0f )
 		:
@@ -39,6 +42,7 @@ public:
 			bodyDef.linearVelocity = b2Vec2( linVel );
 			bodyDef.angularVelocity = angVel;
 			bodyDef.angle = angle;
+			bodyDef.fixedRotation = false;
 			pBody = BodyPtr::Make( world,bodyDef );
 			
 		}
@@ -52,9 +56,7 @@ public:
 			fixtureDef.restitution = 1.0f;
 			pBody->CreateFixture( &fixtureDef );
 		}
-		is_Dead = false;
 		pBody->GetUserData().pointer = reinterpret_cast<uintptr_t>(this);
-		//pBody->SetUserData( this );
 	}
 	bool operator==(const Box& r) const
 	{
@@ -95,15 +97,52 @@ public:
 	{
 		return size;
 	}
+	Vec2 GetLinVel() const
+	{
+		return Vec2(pBody->GetLinearVelocity());
+	}
 	const ColorTrait& GetColorTrait() const
 	{
 		return *pColorTrait;
 	}
-	bool GetIsDead() const
+	void CloneColorTrait(Box& b)
 	{
-		return is_Dead;
+		pColorTrait.reset();
+		pColorTrait = b.GetColorTrait().Clone();
 	}
-	bool is_Dead;
+
+	void ChangeDensity(float dens)
+	{
+		pBody->GetFixtureList()->SetDensity(dens);
+		pBody->ResetMassData();
+	}
+	void ChangeMass(float NewMass)		//ei toimi kunnolla
+	{
+		b2MassData mass;
+		mass.center = pBody->GetPosition();
+		mass.I = pBody->GetInertia();
+		mass.mass = NewMass;
+		pBody->SetMassData(&mass);
+		
+	}
+	float GetMassF()
+	{
+		return pBody->GetMass();
+	}
+
+	std::vector<std::unique_ptr<Box>> slice(b2World& world);
+
+	enum class ColEffect
+	{
+		Nothing,
+		Dead,
+		Slice,
+		MassChange,
+		DensityChange,
+		ColorCloner
+	};
+	Box::ColEffect effect = Box::ColEffect::Nothing;
+
 private:
 	static void Init()
 	{
@@ -114,9 +153,9 @@ private:
 		}
 	}
 private:
+	
 	static IndexedTriangleList<Vec2> model;
 	float size;
 	BodyPtr pBody;
 	std::unique_ptr<ColorTrait> pColorTrait;
-	
 };
